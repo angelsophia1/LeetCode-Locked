@@ -1,0 +1,56 @@
+Question:
+Given a string S, return the number of substrings of length K with no repeated characters.
+
+ 
+
+Example 1:
+
+Input: S = "havefunonleetcode", K = 5
+Output: 6
+Explanation: 
+There are 6 substrings they are : 'havef','avefu','vefun','efuno','etcod','tcode'.
+Example 2:
+
+Input: S = "home", K = 5
+Output: 0
+Explanation: 
+Notice K can be larger than the length of S. In this case is not possible to find any substring.
+ 
+
+Note:
+
+1.1 <= S.length <= 10^4
+2.All characters of S are lowercase English letters.
+3.1 <= K <= 10^4
+
+Website:https://repl.it/languages/csharp
+
+using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+class MainClass {
+  public static void Main (string[] args) {
+      string S = "havefunonleetcode";
+      int K = 5;
+      if(K>S.Length) return;//return 0;
+      IList<string> res = new List<string>();
+      for(int i = 0;i<S.Length-K+1;i++)
+      {
+        int[] tmp = new int[26];
+        StringBuilder sb = new StringBuilder();
+        for(int j = 0;j<K;j++)
+        {
+          if(tmp[S[i+j]-'a']<1)
+          {
+            tmp[S[i+j]-'a']++;
+            sb.Append(S[i+j]);
+          }
+          else break;
+        }
+        if(sb.Length > K-1)res.Add(sb.ToString());
+      }
+      Console.WriteLine(res.Count);
+  }
+
+}
