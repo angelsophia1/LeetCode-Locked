@@ -1,1 +1,33 @@
+Qestion:
+Given a string S, remove the vowels 'a', 'e', 'i', 'o', and 'u' from it, and return the new string.
 
+Example 1:
+Input: "leetcodeisacommunityforcoders"
+Output: "ltcdscmmntyfrcdrs"
+
+Example 2:
+Input: "aeiou"
+Output: ""
+
+Note:
+1.S consists of lowercase English letters only.
+2.1 <= S.length <= 1000
+
+
+Website: https://repl.it/languages/csharp
+
+using System;
+using System.Text;
+using System.Collections.Generic;
+class MainClass {
+  public static void Main (string[] args) {
+    string test = "abcdefgabcdefg";
+    string s = "aeiou";
+    List<char> list = new List<char>();
+    foreach(char c in test)list.Add(c);
+    foreach(char c in s)list.RemoveAll(x=>x==c);
+    StringBuilder sb = new StringBuilder();
+    foreach(char c in list)sb.Append(c);
+    Console.WriteLine (sb.ToString());
+  }
+}
