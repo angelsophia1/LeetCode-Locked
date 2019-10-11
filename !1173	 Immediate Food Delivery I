@@ -38,3 +38,17 @@ Result table:
 +----------------------+
 The orders with delivery id 2 and 3 are immediate while the others are scheduled.
 
+select count(*)*100/b.total as immdediate_percentage from Delivery a, 
+(select count(*) as total from Delivery) b
+where a.order_date = a.customer_pref_delivery_date;
+
+Website:https://www.jdoodle.com/execute-sql-online/
+
+create table calc(order_date date,customer_pref_delivery_date date);
+
+insert into calc values( '2019-08-02', '2019-08-02');
+insert into calc values( '2019-08-01', '2019-08-02');
+select count(*) *100/b.total as immediate_percentage from calc a, 
+(select count(*) as total from calc) b
+where a.order_date = a.customer_pref_delivery_date;
+
