@@ -38,3 +38,20 @@ Result table:
 | 4    |
 | 7    |
 +------+
+
+SELECT DISTINCT author_id as id
+FROM Views
+Where author_id = viewer_id
+ORDER BY author_id ASC;
+
+Website:https://www.jdoodle.com/execute-sql-online/
+
+
+create table calc( article_id int, author_id int, viewer_id int);
+
+insert into calc values(1, 7, 7);
+insert into calc values(2, 7, 1);
+insert into calc values(3, 4, 4);
+select distinct author_id as id from calc
+where author_id = viewer_id
+order by author_id asc;
