@@ -66,4 +66,22 @@ where a.sum = (select max(b.sum)from(select seller_id, sum(price) as sum
 from Sales
 group by seller_id)b )
 
+Website:https://www.jdoodle.com/execute-sql-online/
+
+create table Sales(seller_id int,price int);
+insert into Sales
+values
+(1,2000),
+(1,800),
+(2,800),
+(3,2800);
+
+select a.seller_id
+from 
+(select seller_id, sum(price) as sum 
+from Sales
+group by seller_id) a 
+where a.sum = (select max(b.sum)from(select seller_id, sum(price) as sum 
+from Sales
+group by seller_id)b )
 
