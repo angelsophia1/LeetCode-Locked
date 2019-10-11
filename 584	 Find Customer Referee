@@ -1,0 +1,38 @@
+Question:
+Given a table customer holding customers information and the referee.
+
++------+------+-----------+
+| id   | name | referee_id|
++------+------+-----------+
+|    1 | Will |      NULL |
+|    2 | Jane |      NULL |
+|    3 | Alex |         2 |
+|    4 | Bill |      NULL |
+|    5 | Zack |         1 |
+|    6 | Mark |         2 |
++------+------+-----------+
+Write a query to return the list of customers NOT referred by the person with id '2'.
+
+For the sample data above, the result is:
+
++------+
+| name |
++------+
+| Will |
+| Jane |
+| Bill |
+| Zack |
++------+
+
+SELECT name FROM customer WHERE referee_id <> 2 OR referee_id IS NULL;
+
+Website:https://www.jdoodle.com/execute-sql-online/
+
+
+create table calc(id int, name char, referee_id int);
+
+insert into calc values(1, 'Bill', null);
+insert into calc values(2, 'Jane', null);
+insert into calc values(3, 'Alice', 2);
+select name from calc
+where referee_id <> 2 or referee_id is null;
