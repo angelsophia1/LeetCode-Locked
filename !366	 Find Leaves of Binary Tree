@@ -34,5 +34,52 @@ Explanation:
 
           []         
           
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
 Website:https://repl.it/languages/csharp
 
+using System;
+using System.Collections.Generic;
+
+class MainClass {
+  public class TreeNode{
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
+    public TreeNode(int x)
+    {
+      val = x;
+    }
+  }
+  public static void Main (string[] args) {
+    TreeNode treeNode = new TreeNode(1);
+    treeNode.left = new TreeNode(2);
+    treeNode.right = new TreeNode(3);
+    treeNode.left.left = new TreeNode(4);
+    treeNode.left.right = new TreeNode(5);
+    IList<IList<int>> res = new List<IList<int>>();
+    Levels(treeNode,res);
+    Console.WriteLine (res[0][2]);
+  }
+  public static int Levels(TreeNode treeNode,IList<IList<int>> res)
+  {
+    if(treeNode == null) return -1;
+    int left = Levels(treeNode.left,res);
+    int right = Levels(treeNode.right,res);
+    int level = Math.Max(left,right)+1;
+    if(res.Count<level+1)
+    {
+      res.Add(new List<int>());
+    }
+    res[level].Add(treeNode.val);
+    return level;
+  }
+}
