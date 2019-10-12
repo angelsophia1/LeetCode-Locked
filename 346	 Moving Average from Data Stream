@@ -1,0 +1,40 @@
+Question:
+Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.
+
+Example:
+
+MovingAverage m = new MovingAverage(3);
+m.next(1) = 1
+m.next(10) = (1 + 10) / 2
+m.next(3) = (1 + 10 + 3) / 3
+m.next(5) = (10 + 3 + 5) / 3
+
+Website:https://repl.it/languages/csharp
+using System;
+using System.Collections.Generic;
+class MainClass {
+  public static void Main (string[] args) {
+    MovingAverage m = new MovingAverage(3);
+    m.Next(1);
+    m.Next(10);
+    m.Next(3);
+    Console.WriteLine(m.Next(5));
+  }
+  public class MovingAverage{
+    int capacity = 0;
+    int sum = 0;
+    Queue<int> queue = new Queue<int>();
+    public MovingAverage(int size){
+      capacity = size;
+    }
+    public double Next(int val){
+      if(queue.Count<capacity)queue.Enqueue(val);
+      else{
+        sum-=queue.Dequeue();
+        queue.Enqueue(val);
+      }
+      sum+=val;
+      return (double)sum/queue.Count;
+    }
+  }
+}
