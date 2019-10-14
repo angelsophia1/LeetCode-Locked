@@ -22,3 +22,13 @@ Constraints:
 
 1.Each tree has at most 5000 nodes.
 2.-10^9 <= target, node.val <= 10^9
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
