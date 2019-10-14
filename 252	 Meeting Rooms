@@ -1,0 +1,62 @@
+Question:
+Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), determine if a person could attend all meetings.
+
+Example 1:
+
+Input: [[0,30],[5,10],[15,20]]
+Output: false
+Example 2:
+
+Input: [[7,10],[2,4]]
+Output: true
+NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
+
+/** Java
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+ 
+Website:https://repl.it/languages/csharp
+using System;
+using System.Collections.Generic;
+class MainClass {
+  public class Interval{
+    public int start = 0;
+    public int end = 0;
+    public Interval()
+    {
+
+    }
+    public Interval(int s,int e)
+    {
+      start = s;
+      end = e;
+    }
+  }
+  public class CustomComparer:IComparer<Interval>{
+    public int Compare(Interval a, Interval b)
+    {
+      if(a.start == b.start)return 0;
+      else if(a.start<b.start) return -1;
+      else return 1;
+    }
+  }
+  public static void Main (string[] args) {
+    Interval[] intervals = new Interval[3]{new Interval(0,30),new Interval(5,15),new Interval(15,20)};
+    Array.Sort(intervals,new CustomComparer());
+    for(int i = 0;i<intervals.Length-1;i++)
+    {
+      if(intervals[i].end>intervals[i+1].start){
+        Console.WriteLine(false);//return false
+        return;
+      }
+    }
+    Console.WriteLine(true);//return true
+  }
+  
+}
