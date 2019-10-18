@@ -7,3 +7,39 @@ Input: nums = [3,5,2,1,6,4]
 Output: One possible answer is [3,5,1,6,2,4]
 
 Website:https://repl.it/languages/csharp
+
+using System;
+
+class MainClass {
+  public static void Main (string[] args) {
+    int[] nums = new int[6]{3,5,2,1,6,4};
+    WiggleSort(nums);
+    foreach(int i in nums)Console.WriteLine (i);
+  }
+  public static void WiggleSort(int[] nums)
+  {
+    if(nums.Length<1)return;
+    for(int i = 1;i<nums.Length;i++)
+    {
+      if(i%2>0)
+      {
+        if(nums[i-1]>nums[i])
+        {
+          Swap(nums,i);
+        }
+      }else
+      {
+        if(nums[i-1]<nums[i])
+        {
+          Swap(nums,i);
+        }
+      }
+    }
+  }
+  public static void Swap(int[] nums,int i)
+  {
+    int tmp = nums[i-1];
+    nums[i-1] = nums[i];
+    nums[i] = tmp;
+  }
+}
