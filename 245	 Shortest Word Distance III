@@ -1,0 +1,59 @@
+This is a follow up of Shortest Word Distance. The only difference is now word1 could be the same asword2.
+
+Given a list of words and two words word1 and word2, return the shortest distance between these two words in the list.
+
+word1 and word2 may be the same and they represent two individual words in the list.
+
+For example,
+Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
+
+Given word1 = “makes”, word2 = “coding”, return 1.
+Given word1 = "makes", word2 = "makes", return 3.
+
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;
+
+public class Program
+{
+	public static int ShortestDistance(string[] words, string word1, string word2)
+	{
+		if(word1!=word2)
+		{
+			int first = -1,second = -1,res = Int32.MaxValue;
+			for(int i = 0;i<words.Length;i++)
+			{
+				if(words[i]==word1)
+				{
+					first = i;
+					if(second>-1)res = Math.Min(res,Math.Abs(first-second));
+				}
+				else if(words[i]==word2)
+				{
+					second = i;
+					if(first>-1)res = Math.Min(res,Math.Abs(first-second));
+				}
+			}
+			return res;
+		}else
+		{
+			int prev = -1,res = Int32.MaxValue;
+			for(int i = 0;i<words.Length;i++)
+			{
+				if(words[i]==word1)
+				{
+					if(prev>-1)res = Math.Min(res,Math.Abs(i-prev));
+					prev = i;
+				}
+			}
+			return res;
+		}
+		return -1;
+	}
+	public static void Main()
+	{
+		string[] words = new string[5] {"practice", "makes", "perfect", "coding", "makes"};
+		Console.WriteLine(ShortestDistance(words,"makes","makes"));
+	}
+}
