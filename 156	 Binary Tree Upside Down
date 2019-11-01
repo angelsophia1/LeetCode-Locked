@@ -1,0 +1,69 @@
+Given a binary tree where all the right nodes are either leaf nodes with a sibling (a left node that shares the same parent node) or empty, flip it upside down and turn it into a tree where the original right nodes turned into left leaf nodes. Return the new root.
+
+For example:
+Given a binary tree {1,2,3,4,5},
+    1
+   / \
+  2   3
+ / \
+4   5
+return the root of the binary tree [4,5,2,#,#,3,1].
+   4
+  / \
+ 5   2
+    / \
+   3   1  
+   
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;
+public class Program
+{
+	public class TreeNode{
+		public int val;
+		public TreeNode left;
+		public TreeNode right;
+		public TreeNode(int x){ val = x;}
+	}
+	public static TreeNode UpsideDownBinaryTree(TreeNode root){
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		if(root==null)return null;
+		while(root.left!=null){
+			stack.Push(root);
+			root = root.left;
+		}	
+		stack.Push(root);
+		while(stack.Count>0){
+			TreeNode node = stack.Pop();
+			if(stack.Count>0)
+			{
+				node.right = stack.Peek();
+				node.left = stack.Peek().right;
+			}else{
+				node.left = null;
+				node.right = null;
+			}
+		}	
+		return root;
+	}
+	public static void Main()
+	{
+		TreeNode root = new TreeNode(1);
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+		TreeNode node = UpsideDownBinaryTree(root);
+		Queue<TreeNode> q = new Queue<TreeNode>();
+		q.Enqueue(node);
+		while(q.Count>0)
+		{
+			TreeNode curr = q.Dequeue();
+			Console.WriteLine(curr.val);
+			if(curr.left!=null)q.Enqueue(curr.left);
+			if(curr.right!=null)q.Enqueue(curr.right);
+		}
+	}
+}
+
