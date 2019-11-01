@@ -1,0 +1,40 @@
+Design and implement a TwoSum class. It should support the following operations:add and find.
+
+add - Add the number to an internal data structure.
+find - Find if there exists any pair of numbers which sum is equal to the value.
+
+For example,
+
+add(1); add(3); add(5);
+find(4) -> true
+find(7) -> false
+
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;
+public class Program
+{
+	public class TwoSum{
+		HashSet<int> sum = new HashSet<int>();
+		IList<int> list = new List<int>();
+		public void Add(int num){
+			foreach(int i in list)
+				sum.Add(i+num);
+			list.Add(num);
+		}
+		public bool Find(int num){
+			return sum.Contains(num);
+		}	
+	}
+	public static void Main()
+	{
+		TwoSum test = new TwoSum();
+		test.Add(1);
+		test.Add(3);
+		test.Add(5);
+		Console.WriteLine(test.Find(4));
+		Console.WriteLine(test.Find(7));
+	}
+}
+
