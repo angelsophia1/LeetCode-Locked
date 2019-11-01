@@ -1,0 +1,42 @@
+This is a follow up of Shortest Word Distance. The only difference is now you are given the list of words and your method will be calledrepeatedly many times with different parameters. How would you optimize it?
+
+Design a class which receives a list of words in the constructor, and implements a method that takes two words word1 and word2 and return the shortest distance between these two words in the list.
+
+For example,
+Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
+
+Given word1 = “coding”, word2 = “practice”, return 3.
+Given word1 = "makes", word2 = "coding", return 1.
+
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;
+public class Program
+{
+	public class WordDistance{
+		public static Dictionary<string, IList<int>> d ;
+		public WordDistance(string[] words){
+			d = new Dictionary<string,IList<int>>();
+			for(int i = 0;i<words.Length;i++){
+				if(d.ContainsKey(words[i]))d[words[i]].Add(i);
+				else d.Add(words[i],new List<int>(){i});
+			}
+		}
+		public int Shortest(string word1,string word2){
+			IList<int> l1 = d[word1],l2 = d[word2];
+			int res = Int32.MaxValue;
+			foreach(int i1 in l1)
+				foreach(int i2 in l2)
+					res = Math.Min(res,Math.Abs(i1-i2));
+			return res;
+		}
+	}
+	public static void Main()
+	{
+		string[] words = new string[5] {"practice", "makes", "perfect", "coding", "makes"};
+		WordDistance w = new WordDistance(words);
+		Console.WriteLine(w.Shortest("practice","coding"));
+	}
+}
+
