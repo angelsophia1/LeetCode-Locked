@@ -1,0 +1,54 @@
+Given a string, we can "shift" each of its letter to its successive letter, for example: "abc" -> "bcd". We can keep "shifting" which forms the sequence:
+
+"abc" -> "bcd" -> ... -> "xyz"
+Given a list of strings which contains only lowercase alphabets, group all strings that belong to the same shifting sequence.
+
+For example, given: ["abc", "bcd", "acef", "xyz", "az", "ba", "a", "z"], 
+Return:
+
+[
+  ["abc","bcd","xyz"],
+  ["az","ba"],
+  ["acef"],
+  ["a","z"]
+]
+Note: For the return value, each inner list's elements must follow the lexicographic order.
+
+Website:https://repl.it/languages/csharp
+
+using System;
+using System.Collections.Generic;
+class MainClass {
+  public static void Main (string[] args) {
+    string[] strings = new string[8]{"abc", "bcd", "acef", "xyz", "az", "ba", "a", "z"};
+    IList<IList<string>> res = GroupStrings(strings);
+    foreach(var l in res)
+    {
+      Console.WriteLine(l.Count);
+      foreach(var s in l)
+        Console.WriteLine(s);
+    }
+  }
+  public static IList<IList<string>> GroupStrings(string[] strings)
+  {
+    IList<IList<string>> res = new List<IList<string>>();
+    Dictionary<string,IList<string>> d = new Dictionary<string,IList<string>>();
+    foreach(string str in strings)
+    {
+      char[] arr = new char[str.Length-1];
+      for(int i = 0;i<str.Length-1;i++)
+      {
+        int curr = str[i+1]-str[i];
+        if(curr>-1)
+          arr[i] = (char)(curr+'a');
+        else
+          arr[i] = (char)(curr+26+'a');
+      }
+      string key = new string(arr);
+      if(d.ContainsKey(key))d[key].Add(str);
+      else d.Add(key, new List<string>(){str});
+    }
+    foreach(var pair in d)res.Add(pair.Value);
+    return res;
+  }
+}
