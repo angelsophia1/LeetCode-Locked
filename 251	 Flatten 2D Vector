@@ -1,0 +1,69 @@
+Implement an iterator to flatten a 2d vector.
+
+For example,
+Given 2d vector =
+
+[
+  [1,2],
+  [3],
+  [4,5,6]
+]
+By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,2,3,4,5,6].
+
+Hint:
+
+How many variables do you need to keep track?
+Two variables is all you need. Try with x and y.
+Beware of empty rows. It could be the first few rows.
+To write correct code, think about the invariant to maintain. What is it?
+The invariant is x and y must always point to a valid point in the 2d vector. Should you maintain your invariant ahead of time or right when you need it?
+Not sure? Think about how you would implement hasNext(). Which is more complex?
+Common logic in two different places should be refactored into a common method.
+
+Website:https://rextester.com/
+
+//Rextester.Program.Main is the entry point for your code. Don't change it.
+//Compiler version 4.0.30319.17929 for Microsoft (R) .NET Framework 4.5
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace Rextester
+{
+    public class Program
+    {
+        public class Vector2D{
+            public Queue<int> queue;
+            public Vector2D(IList<IList<int>> vec2d){
+                queue = new Queue<int>();
+                foreach(IList<int> list in vec2d){
+                    foreach(int i in list){
+                        queue.Enqueue(i);
+                    }
+                }
+            }
+            public int Next(){
+                if(HasNext())
+                    return queue.Dequeue();
+                return -1;
+            }
+            public bool HasNext(){
+                return queue.Count>0;
+            }
+        }
+        public static void Main(string[] args)
+        {
+            IList<IList<int>> vec2d = new List<IList<int>>();
+            vec2d.Add(new List<int>(){1,2});
+            vec2d.Add(new List<int>(){3});
+            vec2d.Add(new List<int>(){4,5,6});
+            Vector2D v = new Vector2D(vec2d);
+            while(v.HasNext())
+            {
+                Console.WriteLine(v.Next());
+            }    
+        }
+    }
+}
