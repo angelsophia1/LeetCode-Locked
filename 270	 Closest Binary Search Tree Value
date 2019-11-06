@@ -1,0 +1,49 @@
+Given a non-empty binary search tree and a target value, find the value in the BST that is closest to the target.
+
+Note:
+
+Given target value is a floating point.
+You are guaranteed to have only one unique value in the BST that is closest to the target.
+
+Website:https://dotnetfiddle.net/
+
+using System;
+					
+public class Program
+{
+	public class TreeNode{
+		public int val;
+		public TreeNode left;
+		public TreeNode right;
+		public TreeNode(int x){ val = x;}
+	}
+	public static void Main()
+	{
+		TreeNode root = new TreeNode(1);
+		root.right = new TreeNode(2);
+		Console.WriteLine(ClosestValue(root,3.14159));
+	}
+	public static int ClosestValue(TreeNode root, double target) {
+		
+        int closest = root.val;
+        double min = Double.MaxValue;
+        
+        while(root!=null) {
+			double distance = Math.Abs(root.val - target);
+            if( distance < min  ) {
+                min = distance;
+                closest = root.val;
+            }
+            
+            if(target < root.val) {
+                root = root.left;
+            } else if(target > root.val) {
+                root = root.right;
+            } else {
+                return root.val;
+            }
+        }
+		return closest;
+	}
+}
+
