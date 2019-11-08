@@ -35,3 +35,37 @@ Note:
 The directed graph is represented as an adjacency matrix, which is an n x n matrix where a[i][j] = 1 means person i knows person j while a[i][j] = 0 means the contrary.
 Remember that you won't have direct access to the adjacency matrix.
 
+Website:https://repl.it/languages/csharp
+
+using System;
+using System.Collections.Generic;
+class MainClass {
+  public static int[,] matrix = new int[,]{{0,0,1,0},{0,0,1,0},{0,0,0,0},{0,0,1,0}};
+  public static bool Knows(int a,int b)
+  {
+    return matrix[a,b]==1;
+  }
+  public static int FindCelebrity(int n)
+  {
+    Stack<int> stack = new Stack<int>();
+    for(int i = 0;i<n;i++)stack.Push(i);
+    while(stack.Count>1)
+    {
+      int a = stack.Pop();
+      int b = stack.Pop();
+      if(Knows(a,b))stack.Push(b);
+      else stack.Push(a);
+    }
+    int last = stack.Pop();
+    for(int i = 0;i<n;i++)
+    {
+      if(i!=last&&(!Knows(i,last)||Knows(last,i)))return -1;
+    }
+    return last;
+  }
+
+  public static void Main (string[] args) {
+    Console.WriteLine(FindCelebrity(4));
+  }
+}
+
