@@ -1,0 +1,67 @@
+Question:
+Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+
+Example 1:
+
+Input: [[0, 30],[5, 10],[15, 20]]
+Output: 2
+Example 2:
+
+Input: [[7,10],[2,4]]
+Output: 1
+NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
+
+/** Java
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+ 
+https://repl.it/languages/csharp
+
+using System;
+using System.Linq;
+using System.Collections.Generic;
+class MainClass {
+    public class Interval{
+      public int start = 0;
+      public int end = 0;
+      public Interval()
+      {
+
+      }
+      public Interval(int s,int e)
+      {
+        start = s;
+        end = e;
+      }
+  }
+
+  public static int MinMeetingRooms(Interval[] intervals) {
+    int MinRooms = 0;
+    Dictionary<int,int> d = new Dictionary<int,int>();
+    foreach(Interval i in intervals)
+    {
+      if(d.ContainsKey(i.start))d[i.start]++;
+      else d.Add(i.start,1);
+      if(d.ContainsKey(i.end))d[i.end]--;
+      else d.Add(i.end,-1);
+    }
+    int curr = 0;
+    foreach(var v in d.OrderBy(v=>v.Key))
+    {
+      curr += v.Value;
+      MinRooms = Math.Max(curr,MinRooms);
+    }
+    return MinRooms;
+  }
+
+  public static void Main (string[] args) {
+    Interval[] intervals = new Interval[3]{new Interval(0,30),new Interval(5,15),new Interval(15,20)};
+    Console.WriteLine (MinMeetingRooms(intervals));
+  }
+}
