@@ -1,0 +1,71 @@
+Given a binary tree, find the length of the longest consecutive sequence path.
+
+The path refers to any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The longest consecutive path need to be from parent to child (cannot be the reverse).
+
+For example,
+
+   1
+    \
+     3
+    / \
+   2   4
+        \
+         5
+Longest consecutive sequence path is 3-4-5, so return 3.
+   2
+    \
+     3
+    / 
+   2    
+  / 
+ 1
+Longest consecutive sequence path is 2-3,not3-2-1, so return 2.
+
+Website:https://repl.it/languages/csharp
+
+using System;
+
+class MainClass {
+  public class TreeNode{
+		public int val;
+		public TreeNode left;
+		public TreeNode right;
+		public TreeNode(int x){ val = x;}
+	}
+  public static int LongestConsecutive(TreeNode root)  
+  {  
+    if (root == null)return 0;  
+    int res = 0;  
+    // call utility method with current length 0  
+    LongestConsecutiveUtil(root, 0, root.val, ref res);  
+      
+    return res;  
+  }  
+
+  // Utility method to return length of longest  
+  // consecutive sequence of tree  
+  public static void LongestConsecutiveUtil(TreeNode root, int curlength,int expected, ref int res)  
+  {  
+      if (root == null)return;  
+
+      // if root data has one more than its parent  
+      // then increase current length  
+      if (root.val == expected)  curlength++;  
+      else curlength = 1;  
+
+      // update the maximum by current length  
+      res= Math.Max(res, curlength);  
+
+      // recursively call left and right subtree with  
+      // expected value 1 more than root data  
+      LongestConsecutiveUtil(root.left, curlength,root.val + 1,ref res);  
+      LongestConsecutiveUtil(root.right, curlength,root.val + 1,ref res);  
+  }  
+  public static void Main (string[] args) {
+    TreeNode root = new TreeNode(2);
+    root.right = new TreeNode(3);
+    root.right.left = new TreeNode(2);
+    root.right.left.left = new TreeNode(1);
+    Console.WriteLine (LongestConsecutive(root));
+  }
+}
