@@ -1,0 +1,62 @@
+Given a pattern and a string str, find if strfollows the same pattern.
+
+Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty substring in str.
+
+Example 1:
+
+Input: pattern = "abab", str = "redblueredblue"
+Output: true
+Example 2:
+
+Input: pattern = pattern = "aaaa", str = "asdasdasdasd"
+Output: true
+Example 3:
+
+Input: pattern = "aabb", str = "xyzabcxzyabc"
+Output: false
+Notes:
+You may assume both pattern and str contains only lowercase letters.
+
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;	
+using System.Linq;
+public class Program
+{
+	public static bool WordPatternMatch(string pattern, string str)
+	{
+		return Helper(pattern,0,str,0,new Dictionary<char,string>(),new HashSet<string>());
+	}
+	public static bool Helper(string pattern,int i, string str, int j,Dictionary<char,string> d,HashSet<string> h)
+	{
+		if(i==pattern.Length&&j==str.Length)return true;
+		if(i>=pattern.Length||j>=str.Length)return false;
+		if(d.ContainsKey(pattern[i]))
+		{
+			string curr = d[pattern[i]];
+			int length = curr.Length;
+			if(j+length<=str.Length&&str.Substring(j,length)==curr){
+				return Helper(pattern,i+1,str,j+length,d,h);
+			}else return false;
+		}
+		for(int k = j;k<str.Length;k++)
+		{
+			string curr = str.Substring(j,k-j+1);
+			if(h.Contains(curr))continue;
+			d.Add(pattern[i],curr);
+			h.Add(curr);
+			if(Helper(pattern,i+1,str,k+1,d,h))return true;
+			d.Remove(pattern[i]);
+			h.Remove(curr);
+		}
+		return false;
+	}	
+	public static void Main()
+	{
+		string pattern ="aabb";
+		string str = "xyzabcxzyabc";
+		Console.WriteLine(WordPatternMatch(pattern,str));
+	}
+}
+
