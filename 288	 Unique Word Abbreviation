@@ -1,0 +1,68 @@
+An abbreviation of a word follows the form <first letter><number><last letter>. Below are some examples of word abbreviations:
+
+a) it                      --> it    (no abbreviation)
+
+     1
+b) d|o|g                   --> d1g
+
+              1    1  1
+     1---5----0----5--8
+c) i|nternationalizatio|n  --> i18n
+
+              1
+     1---5----0
+d) l|ocalizatio|n          --> l10n
+Assume you have a dictionary and given a word, find whether its abbreviation is unique in the dictionary. A word's abbreviation is unique if no other word from the dictionary has the same abbreviation.
+
+Example: 
+
+Given dictionary = [ "deer", "door", "cake", "card" ]
+
+isUnique("dear") -> false
+isUnique("cart") -> true
+isUnique("cane") -> false
+isUnique("make") -> true
+
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;					
+public class Program
+{
+	public class ValidWordAbbr{
+		Dictionary<string,IList<string>> d = new Dictionary<string,IList<string>>();
+		public ValidWordAbbr(string[] dictionary){
+			foreach(string s in dictionary){
+				if(s.Length<3)return;
+				string abbr = s[0] + (s.Length-2).ToString() + s[s.Length-1];
+				if(d.ContainsKey(abbr))
+				{
+					d[abbr].Add(s);
+				}
+				else
+				{
+					d.Add(abbr,new List<string>(){s});
+				}
+			}
+		}
+		public bool IsUnique(string word){
+			if(word.Length<3)return true;
+			string abbr = word[0] + (word.Length-2).ToString() + word[word.Length-1];
+			if(!d.ContainsKey(abbr))return true;
+			else{
+				if(d[abbr].Count==1&&d[abbr][0] == word)return true;
+			}
+			return false;
+		}
+	}
+	public static void Main()
+	{
+		string[] dictionary = new string[4]{"deer", "door", "cake", "card"};
+		ValidWordAbbr v = new ValidWordAbbr(dictionary);
+		Console.WriteLine(v.IsUnique("dear"));
+		Console.WriteLine(v.IsUnique("cane"));
+		Console.WriteLine(v.IsUnique("cake"));
+		Console.WriteLine(v.IsUnique("cart"));
+	}
+
+}
