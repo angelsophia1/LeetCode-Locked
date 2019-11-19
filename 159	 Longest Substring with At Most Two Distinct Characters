@@ -1,0 +1,46 @@
+Given a string s , find the length of the longest substring t  that contains at most 2 distinct characters.
+
+Example 1:
+
+Input: "eceba"
+Output: 3
+Explanation: tis "ece" which its length is 3.
+Example 2:
+
+Input: "ccaabbb"
+Output: 5
+Explanation: tis "aabbb" which its length is 5.
+
+Website:https://dotnetfiddle.net/
+
+using System;					
+public class Program
+{
+	public static int LengthOfLongestSubstringTwoDistinct(string s)
+	{
+		int left = 0,right = 0,res = 0,count = 0;
+		while(left<s.Length-res&&right<s.Length)
+		{
+			int[] alphabets = new int[26];
+			while(right<s.Length&&count<3)
+			{
+				int curr = s[right]-'a';
+				if(alphabets[curr]++<1)count++;
+				if(count>2)
+				{
+					right++;
+					break;
+				}
+				res = Math.Max(res,right-left+1);
+				right++;
+			}
+			if(--alphabets[s[left++]-'a']<1)count--;
+		}
+		return res;
+	}
+	public static void Main()
+	{
+		Console.WriteLine(LengthOfLongestSubstringTwoDistinct("ceeab"));
+		Console.WriteLine(LengthOfLongestSubstringTwoDistinct("abac"));
+	}
+}
