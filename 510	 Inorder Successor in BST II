@@ -1,0 +1,44 @@
+Given a binary search tree and a node in it, find the in-order successor of that node in the BST.
+
+The successor of a node p is the node with the smallest key greater than p.val.
+
+You will have direct access to the node but not to the root of the tree. Each node will have a reference to its parent node.
+
+Website:https://dotnetfiddle.net/
+
+using System;					
+public class Program
+{
+	public class TreeNode{
+		public int val;
+		public TreeNode left;
+		public TreeNode right;
+		public TreeNode parent;
+		public TreeNode(int x){ val = x;}
+	}
+	public static TreeNode InorderSuccessor(TreeNode p)
+	{
+		if(p.right != null) return p.right;
+		TreeNode curr = p;
+		while(curr!=null)
+		{
+			if(curr.parent != null)
+			{
+				if(curr == curr.parent.left)return curr.parent;
+			}
+			curr = curr.parent;
+		}
+		return null;
+	}
+	public static void Main()
+	{
+		TreeNode root = new TreeNode(2);
+		root.left = new TreeNode(1);
+		root.right = new TreeNode(3);
+		root.left.parent = root;
+		root.right.parent = root;
+		Console.WriteLine(InorderSuccessor(root.left).val);
+		Console.WriteLine(InorderSuccessor(root).val);
+		Console.WriteLine(InorderSuccessor(root.right));
+	}
+}
