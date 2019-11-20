@@ -1,0 +1,78 @@
+Numbers can be regarded as product of its factors. For example,
+
+8 = 2 x 2 x 2;
+  = 2 x 4.
+Write a function that takes an integer n and return all possible combinations of its factors.
+
+Note: 
+
+Each combination's factors must be sorted ascending, for example: The factors of 2 and 6 is [2, 6], not [6, 2].
+You may assume that n is always positive.
+Factors should be greater than 1 and less than n.
+ 
+
+Examples: 
+input: 1
+output: 
+
+[]
+input: 37
+output: 
+
+[]
+input: 12
+output:
+
+[
+  [2, 6],
+  [2, 2, 3],
+  [3, 4]
+]
+input: 32
+output:
+
+[
+  [2, 16],
+  [2, 2, 8],
+  [2, 2, 2, 4],
+  [2, 2, 2, 2, 2],
+  [2, 4, 4],
+  [4, 8]
+]
+
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;
+public class Program
+{
+	public static IList<IList<int>> GetFactors(int n)
+	{
+		return Helper(n,2,true);
+	}
+	public static IList<IList<int>> Helper(int n,int factor ,bool begin)
+	{
+		List<IList<int>> res = new List<IList<int>>();
+		for(int i = factor;i<=(begin?Math.Sqrt(n):n);i++)
+		{
+			if(n%i==0)
+			{
+				IList<IList<int>> curr = Helper(n/i,i,false);
+				if(curr.Count<1)curr.Add(new List<int>(){i});
+				else foreach(var v in curr)v.Add(i);
+				res.AddRange(curr);
+			}
+		}
+		return res;
+	}
+	public static void Main()
+	{
+		IList<IList<int>> res = GetFactors(8);
+		foreach(var v in res)
+		{
+			foreach(int i in v)
+				Console.Write(i);
+			Console.WriteLine("");
+		}
+	}
+}
