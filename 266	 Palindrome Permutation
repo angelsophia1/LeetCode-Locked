@@ -1,0 +1,62 @@
+Given a string, determine if a permutation of the string could form a palindrome.
+
+Example 1:
+
+Input: "code"
+Output: false
+Example 2:
+
+Input: "aab"
+Output: true
+Example 3:
+
+Input: "carerac"
+Output: true
+Hint:
+
+Consider the palindromes of odd vs even length. What difference do you notice?
+Count the frequency of each character.
+If each character occurs even number of times, then it must be a palindrome. How about character which occurs odd number of times?
+
+Website:https://dotnetfiddle.net/
+
+using System;
+					
+public class Program
+{
+	public static bool CanPermutatePalindrome(string s){
+		int length = s.Length;
+		int[] alphabets = new int[26];
+		foreach(char c in s)
+		{
+			alphabets[c-'a']++;
+		}
+		if(length%2==0)
+		{
+			foreach(int i in alphabets)
+				if(i%2!=0)
+					return false;
+		}
+		else
+		{
+			int count = 0;
+			foreach(int i in alphabets)
+				if(i%2!=0)
+				{
+					count++;
+					if(count>1)return false;
+				}
+		}
+		return true;
+	}
+	
+	public static void Main()
+	{
+		string test1 = "carerac";
+		string test2 = "aab";
+		string test3 = "code";
+		Console.WriteLine(CanPermutatePalindrome(test1));
+		Console.WriteLine(CanPermutatePalindrome(test2));
+		Console.WriteLine(CanPermutatePalindrome(test3));
+	}
+}
