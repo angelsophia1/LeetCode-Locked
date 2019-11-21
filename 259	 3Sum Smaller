@@ -1,0 +1,42 @@
+Given an array of n integers nums and a target, find the number of index triplets i, j, k with 0 <= i < j < k < n that satisfy the condition nums[i] + nums[j] + nums[k] < target.
+
+For example, given nums = [-2, 0, 1, 3], and target = 2.
+
+Return 2. Because there are two triplets which sums are less than 2:
+
+[-2, 0, 1]
+[-2, 0, 3]
+Follow up:
+Could you solve it in O(n2) runtime?
+
+Website:https://dotnetfiddle.net/
+
+using System;
+					
+public class Program
+{
+	public static int ThreeSumSmaller(int[] nums,int target)
+	{
+		int res = 0,length = nums.Length;
+		Array.Sort(nums);
+		
+		for(int i = 0;i<length;i++)
+		{
+			int low = i+1, high = length-1,curr = nums[i];	
+			while(low<high)
+			{
+				if(curr + nums[low] + nums[high] < target)
+				{
+					res += high-low;
+					low++;		
+				}else high--;
+			}
+		}
+		return res;
+	}
+	public static void Main()
+	{
+		int[] nums = new int[4]{-2, 0, 1, 3};
+		Console.WriteLine(ThreeSumSmaller(nums,2));
+	}
+}
