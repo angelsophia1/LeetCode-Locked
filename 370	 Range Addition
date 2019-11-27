@@ -1,0 +1,75 @@
+Assume you have an array of length n initialized with all 0's and are given k update operations.
+
+Each operation is represented as a triplet: [startIndex, endIndex, inc] which increments each element of subarray A[startIndex ... endIndex] (startIndex and endIndex inclusive) with inc.
+
+Return the modified array after all k operations were executed.
+
+Example:
+
+Given:
+
+    length = 5,
+    updates = [
+        [1,  3,  2],
+        [2,  4,  3],
+        [0,  2, -2]
+    ]
+
+Output:
+
+    [-2, 0, 3, 5, 3]
+Explanation:
+
+Initial state:
+[ 0, 0, 0, 0, 0 ]
+
+After applying operation [1, 3, 2]:
+[ 0, 2, 2, 2, 0 ]
+
+After applying operation [2, 4, 3]:
+[ 0, 2, 5, 5, 3 ]
+
+After applying operation [0, 2, -2]:
+[-2, 0, 3, 5, 3 ]
+Hint:
+
+Thinking of using advanced data structures? You are thinking it too complicated.
+For each update operation, do you really need to update all elements between i and j?
+Update only the first and end element is sufficient.
+The optimal time complexity is O(k + n) and uses O(1) extra space.
+Credits:
+Special thanks to @vinod23 for adding this problem and creating all test cases.
+
+Website:https://dotnetfiddle.net/
+
+using System;
+					
+public class Program
+{
+	public static int[] GetModifiedArray(int length, int[][] updates)
+	{
+		int[] modified = new int[length];
+		foreach(int[] interval in updates)
+		{
+			modified[interval[0]] += interval[2];
+			if(interval[1]<length-1)
+			{
+				modified[interval[1]+1] -= interval[2]; 
+			}
+		}
+		int[] result = new int[length];
+		result[0] = modified[0];
+		for(int i = 1;i<length;i++)
+		{
+			result[i] = result[i-1] + modified[i];
+		}
+		return result;
+	}
+	
+	public static void Main()
+	{
+		int[][] updates = new int[3][]{new int[3]{1,  3,  2},new int[3]{2,  4,  3},new int[3]{0,  2, -2}};
+		int[] res = GetModifiedArray(5,updates);
+		foreach(int i in res)Console.WriteLine(i);
+	}
+}
