@@ -1,0 +1,74 @@
+Given a string s, return all the palindromic permutations (without duplicates) of it. Return an empty list if no palindromic permutation could be form.
+
+Example 1:
+
+Input: "aabb"
+Output: ["abba", "baab"]
+Example 2:
+
+Input: "abc"
+Output: []
+
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;
+public class Program
+{
+	public static HashSet<string> hashSet = new HashSet<string>();	
+	public static IList<string> GeneratePalindrome(string s)
+	{
+		int[] map = new int[128];
+		char[] st = new char[s.Length/2];
+		if(!CanPermutePalindrome(s,map))return new List<string>();
+		char ch = '0';
+		int k = 0;
+		for(int i = 0;i<map.Length;i++)
+		{
+            if (map[i] % 2 == 1)
+                ch = (char) i;
+            for (int j = 0; j < map[i] / 2; j++) {
+                st[k++] = (char) i;
+            }
+		}
+		Permute(st,0,ch);
+		return new List<string>(hashSet);
+	}
+	public static bool CanPermutePalindrome(string s, int[] map)
+	{
+		int count = 0;
+        for (int i = 0; i < s.Length; i++) {
+            map[s[i]]++;
+            if (map[s[i]] % 2 == 0)
+                count--;
+            else
+                count++;
+        }
+        return count <= 1;
+	}
+	public static void Swap(char[] s, int i, int j) {
+        char temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+	static void Permute(char[] s,int l, char ch)
+	{
+		if (l == s.Length) {
+			string str = new string(s);
+			Array.Reverse(s);
+            hashSet.Add(str + (ch == '0' ? "".ToString() : ch.ToString()) + new string(s));
+        } else {
+            for (int i = l; i < s.Length; i++) {
+                if (s[l] != s[i] || l == i) {
+                    Swap(s, l, i);
+                    Permute(s, l + 1, ch);
+                    Swap(s, l, i);
+                }
+            }
+        }
+	}	
+	public static void Main()
+	{
+		foreach(string s in GeneratePalindrome("AAAALLY"))Console.WriteLine(s);
+	}
+}
