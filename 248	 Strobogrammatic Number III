@@ -13,3 +13,42 @@ Because the range might be a large number, the low and high numbers are represen
 Website:https://dotnetfiddle.net/
 
 
+using System;
+					
+public class Program
+{
+	public static char[][] pairs = {new char[]{'0', '0'}, new char[]{'1', '1'}, new char[]{'6', '9'},new char[] {'8', '8'},new char[] {'9', '6'}};
+	public static int count = 0;
+	public static int StrobogrammaticInRange(string low,string high)
+	{
+		for(int len = low.Length;len<=high.Length;len++)
+			DFS(low,high,new char[len],0,len-1);
+		return count;
+	}
+	public static void DFS(string low,string high, char[] c,int left,int right)
+	{
+		if(left > right) 
+		{
+            string s = new string(c);
+            if((s.Length == low.Length && s.CompareTo(low) < 0) || 
+               (s.Length == high.Length && s.CompareTo(high) > 0)) {
+                   return;
+               }
+            count++; 
+            return;
+        }
+
+        foreach(char[] p in pairs) {
+            c[left] = p[0]; 
+            c[right] = p[1];
+            if(c.Length != 1 && c[0] == '0') continue;
+            if(left < right || left == right && p[0] == p[1]) {
+                DFS(low, high, c, left + 1, right - 1);
+            }
+        }
+	}
+	public static void Main()
+	{
+		Console.WriteLine(StrobogrammaticInRange("50","100"));
+	}
+}
