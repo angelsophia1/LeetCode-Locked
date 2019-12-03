@@ -12,7 +12,6 @@ Because the range might be a large number, the low and high numbers are represen
 
 Website:https://dotnetfiddle.net/
 
-
 using System;
 					
 public class Program
@@ -30,10 +29,13 @@ public class Program
 		if(left > right) 
 		{
             string s = new string(c);
+			//length == low.length and s smaller than low or length == high.length and s larger than high
+			//exclude
             if((s.Length == low.Length && s.CompareTo(low) < 0) || 
                (s.Length == high.Length && s.CompareTo(high) > 0)) {
                    return;
                }
+			//otherwise count plus one
             count++; 
             return;
         }
@@ -41,7 +43,9 @@ public class Program
         foreach(char[] p in pairs) {
             c[left] = p[0]; 
             c[right] = p[1];
+			//exclude those start with 0 and length longer than 1
             if(c.Length != 1 && c[0] == '0') continue;
+			//if left<right or (left equals to right and c[left] == c[right] : the middle character of the odd length)
             if(left < right || left == right && p[0] == p[1]) {
                 DFS(low, high, c, left + 1, right - 1);
             }
@@ -49,6 +53,6 @@ public class Program
 	}
 	public static void Main()
 	{
-		Console.WriteLine(StrobogrammaticInRange("50","100"));
+		Console.WriteLine(StrobogrammaticInRange("0","9"));
 	}
 }
