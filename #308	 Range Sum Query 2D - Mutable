@@ -27,26 +27,37 @@ The matrix is only modifiable by the update function.
 You may assume the number of calls to update and sumRegion function is distributed evenly.
 You may assume that row1 ≤ row2 and col1 ≤ col2.
 
-public class NumMatrix {
-    private int[,] array;
-    private int rows,columns;
-    public NumMatrix(int[][] matrix) {
-        if(matrix.Length<1||matrix[0].Length<1)return;
-        rows = matrix.Length;
-        columns = matrix[0].Length;
-        array = new int[rows,columns];
-        for(int i = 0;i<rows;i++)
-            for(int j = 0;j<columns;j++)
-                array[i,j] = matrix[i][j];
-    }
-    public void Update(int i,int j,int val){
-      array[i,j] = val;
-    }
-    public int SumRegion(int row1, int col1, int row2, int col2) {
-        int sum = 0;
-        for(int i = row1;i<=row2;i++)
-            for(int j = col1;j<=col2;j++)
-                sum += array[i,j];
-        return sum;
-    }
+Website: https://dotnetfiddle.net/
+
+using System;
+public class Program
+{
+	public class NumMatrix {
+		private int[,] array;
+		private int rows,columns;
+		public NumMatrix(int[][] matrix) {
+			if(matrix.Length<1||matrix[0].Length<1)return;
+			rows = matrix.Length;
+			columns = matrix[0].Length;
+			array = new int[rows,columns];
+			for(int i = 0;i<rows;i++)
+				for(int j = 0;j<columns;j++)
+					array[i,j] = matrix[i][j];
+		}
+		public void Update(int i,int j,int val){
+		  array[i,j] = val;
+		}
+		public int SumRegion(int row1, int col1, int row2, int col2) {
+			int sum = 0;
+			for(int i = row1;i<=row2;i++)
+				for(int j = col1;j<=col2;j++)
+					sum += array[i,j];
+			return sum;
+		}
+	}
+	public static void Main()
+	{
+		NumMatrix test = new NumMatrix(new int[2][]{new int[2]{1,2},new int[2]{1,2}});
+		Console.WriteLine(test.SumRegion(0,0,1,1));
+	}
 }
