@@ -1,0 +1,79 @@
+A string S represents a list of words.
+Each letter in the word has 1 or more options.  If there is one option, the letter is represented as is.  If there is more than one option, then curly braces delimit the options.  For example, "{a,b,c}" represents options ["a", "b", "c"].
+For example, "{a,b,c}d{e,f}" represents the list ["ade", "adf", "bde", "bdf", "cde", "cdf"].
+Return all words that can be formed in this manner, in lexicographical order.
+ 
+Example 1:
+Input: "{a,b}c{d,e}f"
+Output: ["acdf","acef","bcdf","bcef"]
+Example 2:
+Input: "abcd"
+Output: ["abcd"]
+ 
+Note:
+1 <= S.length <= 50
+There are no nested curly brackets.
+All characters inside a pair of consecutive opening and ending curly brackets are different.
+
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Linq;
+using System.Text;
+using System.Collections.Generic;
+public class Program
+{
+	public static string[] Expand(string s)
+	{
+		IList<string> list = new List<string>();
+		Helper(s,new StringBuilder(),0,list);
+		return list.ToArray();
+	}
+	public static void Helper(string s,StringBuilder sb,int index,IList<string> list)
+	{
+		if(index == s.Length)
+		{
+			list.Add(sb.ToString());
+			return;
+		}
+		char curr = s[index];
+		switch(curr)
+		{
+			default:
+				sb.Append(curr.ToString());
+				Helper(s,sb,index+1,list);
+				sb.Remove(sb.Length-1,1);
+				break;
+			case '{':
+				List<string> subList = new List<string>();
+				while(curr!='}')
+				{
+					curr = s[++index];
+					switch(curr)
+					{
+						case ',':
+							break;
+						case '}':
+							break;
+						default:
+							subList.Add(curr.ToString());
+							break;
+					}
+				}
+				subList.Sort();
+				foreach(string sub in subList)
+				{
+					sb.Append(sub);
+					Helper(s,sb,index + 1,list);
+					sb.Remove(sb.Length-1,1);
+				}
+				break;
+		}
+	}
+	public static void Main()
+	{
+		foreach(string s in Expand("{a,b}c{d,e}"))Console.WriteLine(s);
+		foreach(string s in Expand("{b,a}c{d,e}"))Console.WriteLine(s);
+	}
+}
+
