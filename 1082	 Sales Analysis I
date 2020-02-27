@@ -57,15 +57,6 @@ Result table:
 +-------------+
 Both sellers with id 1 and 3 sold products with the most total price of 2800.
 
-select a.seller_id
-from 
-(select seller_id, sum(price) as sum 
-from Sales
-group by seller_id) a 
-where a.sum = (select max(b.sum)from(select seller_id, sum(price) as sum 
-from Sales
-group by seller_id)b )
-
 Website:https://www.jdoodle.com/execute-sql-online/
 
 create table Sales(seller_id int,price int);
