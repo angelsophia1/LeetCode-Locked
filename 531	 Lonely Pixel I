@@ -1,0 +1,55 @@
+Given a picture consisting of black and white pixels, find the number of black lonely pixels.
+
+The picture is represented by a 2D char array consisting of 'B' and 'W', which means black and white pixels respectively.
+
+A black lonely pixel is character 'B' that located at a specific position where the same row and same column don't have any other black pixels.
+
+Example:
+
+Input: 
+[['W', 'W', 'B'],
+ ['W', 'B', 'W'],
+ ['B', 'W', 'W']]
+
+Output: 3
+Explanation: All the three 'B's are black lonely pixels.
+Note:
+
+The range of width and height of the input 2D array is [1,500].
+
+Website:https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;					
+public class Program
+{
+	public static int FindLonelyPixel(char[][] picture) {
+		int[] rows = new int[picture.Length], cols = new int[picture[0].Length];
+		IList<int[]> list = new List<int[]>();
+		for(int i = 0;i<picture.Length;i++)
+		{
+			for(int j = 0; j< picture[i].Length; j++)
+			{
+				if(picture[i][j] == 'B')
+				{
+					rows[i]++;
+					cols[j]++;
+					list.Add(new int[2]{i,j});
+				}
+			}
+		}
+		int res = 0;
+		foreach(int[] interval in list)
+			if(rows[interval[0]]==1&&cols[interval[1]]==1)
+				res++;
+		return res;
+    }
+	public static void Main()
+	{
+		char[][] picture = new char[3][]{new char[3]{'W', 'W', 'B'},
+										new char[3]{'W', 'B', 'W'},
+										new char[3]{'B', 'W', 'W'}};
+		
+		Console.WriteLine(FindLonelyPixel(picture));
+	}
+}
