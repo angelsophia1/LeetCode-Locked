@@ -45,7 +45,7 @@ The customer id 3 has a first order with delivery id 5 and it is scheduled.
 The customer id 4 has a first order with delivery id 7 and it is immediate.
 Hence, half the customers have immediate first orders.
 
-
+Website:https://www.jdoodle.com/execute-sql-online/
 
 create table Delivery(delivery_id int, customer_id int, order_date date, customer_pref_delivery_date date);
 
