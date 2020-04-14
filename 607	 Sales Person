@@ -1,0 +1,91 @@
+Description
+
+Given three tables: salesperson, company, orders.
+Output all the names in the table salesperson, who didn’t have sales to company 'RED'.
+
+Example
+Input
+
+Table: salesperson
+
++----------+------+--------+-----------------+-----------+
+| sales_id | name | salary | commission_rate | hire_date |
++----------+------+--------+-----------------+-----------+
+|   1      | John | 100000 |     6           | 4/1/2006  |
+|   2      | Amy  | 120000 |     5           | 5/1/2010  |
+|   3      | Mark | 65000  |     12          | 12/25/2008|
+|   4      | Pam  | 25000  |     25          | 1/1/2005  |
+|   5      | Alex | 50000  |     10          | 2/3/2007  |
++----------+------+--------+-----------------+-----------+
+The table salesperson holds the salesperson information. Every salesperson has a sales_id and a name.
+
+Table: company
+
++---------+--------+------------+
+| com_id  |  name  |    city    |
++---------+--------+------------+
+|   1     |  RED   |   Boston   |
+|   2     | ORANGE |   New York |
+|   3     | YELLOW |   Boston   |
+|   4     | GREEN  |   Austin   |
++---------+--------+------------+
+The table company holds the company information. Every company has a com_id and a name.
+
+Table: orders
+
++----------+----------+---------+----------+--------+
+| order_id |  date    | com_id  | sales_id | amount |
++----------+----------+---------+----------+--------+
+| 1        | 1/1/2014 |    3    |    4     | 100000 |
+| 2        | 2/1/2014 |    4    |    5     | 5000   |
+| 3        | 3/1/2014 |    1    |    1     | 50000  |
+| 4        | 4/1/2014 |    1    |    4     | 25000  |
++----------+----------+---------+----------+--------+
+The table orders holds the sales record information, salesperson and customer company are represented by sales_id and com_id.
+
+output
+
++------+
+| name | 
++------+
+| Amy  | 
+| Mark | 
+| Alex |
++------+
+Explanation
+
+According to order '3' and '4' in table orders, it is easy to tell only salesperson 'John' and 'Alex' have sales to company 'RED',
+so we need to output all the other names in table salesperson.
+
+Website:https://www.jdoodle.com/execute-sql-online/
+
+create table salesperson(sales_id int, name char, salary int, commission_rate int, hir_date date);
+create table company(com_id int, name char, city char);
+create table order_table(order_id int, order_date date, com_id int, sales_id int, amount int);
+insert into salesperson 
+values
+(1, "John", 100000, 6 , '4/1/2006'),
+(2, "Amy", 1200000, 5 , '5/1/2010'),
+(3, "Mark", 100000, 12 , '12/25/2008'),
+(4, "Pam", 100000, 25 , '1/1/2005'),
+(5, "Alex", 100000, 10 , '2/3/2007')
+;
+insert into company
+values
+(1, "RED", "Boston"),
+(2, "ORANGE", "New York"),
+(3, "YELLOW", "Boston"),
+(4, "GREEN", "Austin")
+;
+insert into order_table
+values
+(1, '1/1/2014',3,4,100000),
+(2, '2/1/2014',4,5,5000),
+(3, '3/1/2014',1,1,50000),
+(4, '4/1/2014',1,4,25000)
+;
+select name from salesperson
+where sales_id not in
+(select distinct a.sales_id
+from order_table a, company b
+where a.com_id = b.com_id and b.name = "RED")
