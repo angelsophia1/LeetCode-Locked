@@ -38,7 +38,7 @@ Result table:
 +----------------------+
 The orders with delivery id 2 and 3 are immediate while the others are scheduled.
 
-select count(*)*100/b.total as immdediate_percentage from Delivery a, 
+select count(*)*100.0/b.total as immdediate_percentage from Delivery a, 
 (select count(*) as total from Delivery) b
 where a.order_date = a.customer_pref_delivery_date;
 
