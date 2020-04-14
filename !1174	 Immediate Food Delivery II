@@ -44,3 +44,29 @@ The customer id 2 has a first order with delivery id 2 and it is immediate.
 The customer id 3 has a first order with delivery id 5 and it is scheduled.
 The customer id 4 has a first order with delivery id 7 and it is immediate.
 Hence, half the customers have immediate first orders.
+
+
+
+create table Delivery(delivery_id int, customer_id int, order_date date, customer_pref_delivery_date date);
+
+insert into Delivery values( 1,1, '2019-08-01', '2019-08-02');
+insert into Delivery values( 2,2, '2019-08-02', '2019-08-02');
+insert into Delivery values( 3,1, '2019-08-11', '2019-08-12');
+insert into Delivery values( 4,3, '2019-08-24', '2019-08-24');
+insert into Delivery values( 5,3, '2019-08-21', '2019-08-22');
+insert into Delivery values( 6,2, '2019-08-11', '2019-08-13');
+insert into Delivery values( 7,4, '2019-08-09', '2019-08-09');
+
+select round(100.0 * sum(
+case 
+when order_date = customer_pref_delivery_date then 1
+else 0
+end
+) / count(distinct customer_id),2)  immediate_percentage
+from Delivery
+where (customer_id, order_date) in
+(
+select customer_id, min(order_date)
+from Delivery
+group by customer_id
+)
