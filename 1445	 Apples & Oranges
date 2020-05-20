@@ -55,7 +55,7 @@ create table Sales(sale_date date, fruit char, sold_num int);
 insert into Sales values('2020-05-01', 'apples', 10);
 insert into Sales values('2020-05-01', 'oranges', 8);
 
-select a.sale_date, ABS(a.sold_num - b.sold_num)
+select a.sale_date, a.sold_num - b.sold_num
 from Sales a left join Sales b
 on a.sale_date = b.sale_date
 where a.fruit = 'apples' and b.fruit = 'oranges'
