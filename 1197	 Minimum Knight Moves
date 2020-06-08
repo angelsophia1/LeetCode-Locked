@@ -1,0 +1,88 @@
+In an infinite chess board with coordinates from -infinity to +infinity, you have a knight at square [0, 0].
+
+A knight has 8 possible moves it can make, as illustrated below. Each move is two squares in a cardinal direction, then one square in an orthogonal direction.
+
+
+
+Return the minimum number of steps needed to move the knight to the square [x, y]. It is guaranteed the answer exists.
+
+Example 1:
+
+Input: x = 2, y = 1
+Output: 1
+Explanation: [0, 0] → [2, 1]
+Example 2:
+
+Input: x = 5, y = 5
+Output: 4
+Explanation: [0, 0] → [2, 1] → [4, 2] → [3, 4] → [5, 5]
+Constraints:
+
+|x| + |y| <= 300
+
+website: https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;		
+using System.Linq;
+public class Program
+{    
+	public class Cell
+	{
+		public int x;
+		public int y;
+		public Cell(int x, int y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+	}
+	public static int ShortestPath(int x, int y)
+	{
+		bool[,] visited = new bool[601,601];
+		Queue<Cell> queue = new Queue<Cell>();
+		queue.Enqueue(new Cell(0,0));
+		int res = 0;
+		while(queue.Count > 0)
+		{
+			int size = queue.Count;
+			for(int i = 0; i<size;i++)
+			{
+				Cell curr = queue.Dequeue();
+				visited[curr.x + 300,curr.y + 300] = true;
+				if(curr.x == x && curr.y == y)return res;
+				foreach(Cell position in GetPositions(curr))
+				{
+					if(!visited[position.x+300, position.y+300])
+						queue.Enqueue(position);
+				}	
+			}	
+			res++;
+		}
+		return -1;
+	}
+	public static IList<Cell> GetPositions(Cell curr)
+	{
+		IList<Cell> list = new List<Cell>();
+		int x = curr.x, y = curr.y;
+		IList<int[]> directions = new List<int[]>(){new int[2]{-2,-1},new int[2]{-2, 1}, new int[2]{-1, -2}, new int[2]{-1, 2}, new int[2]{2,-1}, new int[2]{2, 1}, new int[2]{1, -2}, new int[2]{1,2}};
+		foreach(int[] direction in directions)
+		{
+			if(WithinRange(x + direction[0], y + direction[1]))
+			{
+				list.Add(new Cell(x + direction[0], y + direction[1]));
+			}
+		}
+		return list;
+	}
+	public static bool WithinRange(int x, int y)
+	{
+		return Math.Abs(x) + Math.Abs(y)<=300;	
+	}
+	public static void Main()
+	{
+		Console.WriteLine(ShortestPath(0,0));
+		Console.WriteLine(ShortestPath(2,1));
+		Console.WriteLine(ShortestPath(5,5));
+	}
+}
