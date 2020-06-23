@@ -1,0 +1,92 @@
+You want to build a house on an empty land which reaches all buildings in the shortest amount of distance. You can only move up, down, left and right. You are given a 2D grid of values 0, 1 or 2, where:
+Each 0 marks an empty land which you can pass by freely.
+Each 1 marks a building which you cannot pass through.
+Each 2 marks an obstacle which you cannot pass through.
+For example, given three buildings at (0,0), (0,4), (2,2), and an obstacle at (0,2):
+1 - 0 - 2 - 0 - 1
+|   |   |   |   |
+0 - 0 - 0 - 0 - 0
+|   |   |   |   |
+0 - 0 - 1 - 0 - 0
+The point (1,2) is an ideal empty land to build a house, as the total travel distance of 3+3+1=7 is minimal. So return 7.
+Note: There will be at least one building. If it is not possible to build such house according to the above rules, return -1.
+
+https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;					
+public class Program
+{    
+	//first find all positions of buildings and all empty places
+	//for each building do BFS search for empty places and plus the curr distances with min distance from the empty place to the current building
+	//meanwhile foreach empty places keep record of the buildings reached 
+	//find min distances among all empty places which have all the buildings reached
+	static int ShortestDistance(int[][] grid)
+	{
+		IList<int[]> emptyPlaces = new List<int[]>();
+		int[][] distances = new int[grid.Length][];
+		int[][] numBuild = new int[grid.Length][];
+		int cntBuildings = 0;
+		for(int i = 0; i<grid.Length;i++)
+		{
+			distances[i] = new int[grid[0].Length];
+			numBuild[i] = new int[grid[0].Length];
+		}
+		for(int i = 0; i<grid.Length;i++)
+		{
+			for(int j = 0; j< grid[0].Length;j++)
+			{
+				if(grid[i][j] == 0)
+				{
+					emptyPlaces.Add(new int[2]{i, j});
+				}else if(grid[i][j] == 1)
+				{
+					cntBuildings++;
+					bool[][] visited = new bool[grid.Length][];
+					for(int k = 0; k<grid.Length;k++)visited[k] = new bool[grid[0].Length];
+					Helper(grid, i, j, visited, distances, numBuild);
+				}
+			}
+		}
+		int res = Int32.MaxValue;
+		foreach(int[] ep in emptyPlaces)
+		{
+			if(numBuild[ep[0]][ep[1]] == cntBuildings)res = Math.Min(res, distances[ep[0]][ep[1]]);
+		}
+		return res<Int32.MaxValue? res : -1;
+	}
+	static void Helper(int[][] grid, int x, int y, bool[][] visited, int[][] distances, int[][] numBuild)
+	{
+		visited[x][y] = true;
+		Queue<int[]> queue = new Queue<int[]>();
+		queue.Enqueue(new int[2]{x ,y});
+		int dis = 0;
+		while(queue.Count > 0)
+		{
+			int currCnt = queue.Count;
+			dis++;
+			while(currCnt > 0)
+			{
+				int[] currPos = queue.Dequeue();
+				int[][] directions = new int[4][]{new int[2]{1, 0}, new int[2]{-1, 0}, new int[2]{0, 1}, new int[2]{0, -1}};
+				foreach(int[] dir in directions)
+				{
+					int[] curr = new int[2]{currPos[0] + dir[0], currPos[1] + dir[1]};
+					if(curr[0] >= 0 && curr[0]<grid.Length && curr[1] >= 0 && curr[1] < grid[0].Length && !visited[curr[0]][curr[1]] && grid[curr[0]][curr[1]] == 0)
+					{
+						numBuild[curr[0]][curr[1]]++;
+						distances[curr[0]][curr[1]]+=dis;
+						visited[curr[0]][curr[1]] = true;
+						queue.Enqueue(curr);
+					}
+				}
+				currCnt--;
+			}
+		}
+	}
+	public static void Main()
+	{
+		int[][] grid = new int[3][]{new int[5]{1,0,2,0,1}, new int[5]{0,0,0,0,0}, new int[5]{0,0,1,0,0}};
+		Console.WriteLine(ShortestDistance(grid));
+	}
+}
