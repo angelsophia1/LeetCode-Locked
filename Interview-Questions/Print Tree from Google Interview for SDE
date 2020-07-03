@@ -97,14 +97,14 @@ public class Program
 	
 	public static void Main()
 	{
-        TreePrinter tp = new TreePrinter();
-        IList<Relation> input = new List<Relation>();
-        input.Add(new Relation("animal", "mammal"));
-        input.Add(new Relation("animal", "bird"));
-        input.Add(new Relation("lifeform", "animal"));
-        input.Add(new Relation("cat", "lion"));
-        input.Add(new Relation("mammal", "cat"));
-        input.Add(new Relation("animal", "fish"));       
-        tp.PrintTree(input);
+		TreePrinter tp = new TreePrinter();
+		IList<Relation> input = new List<Relation>();
+		input.Add(new Relation("animal", "mammal"));
+		input.Add(new Relation("animal", "bird"));
+		input.Add(new Relation("lifeform", "animal"));
+		input.Add(new Relation("cat", "lion"));
+		input.Add(new Relation("mammal", "cat"));
+		input.Add(new Relation("animal", "fish"));       
+		tp.PrintTree(input);
 	}
 }
