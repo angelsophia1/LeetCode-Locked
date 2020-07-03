@@ -1,1 +1,110 @@
+Complete the below function which takes an arraylist and displays the list in the expected output
 
+public class TreePrinter {
+public static void printTree(Iterable<Relation> rs) {
+// your code
+
+}
+}
+
+public static class Relation {
+String parent;
+String child;
+public Relation(String parent, String child) { ... }
+}
+}
+
+Example input:
+List<Relation> input = newArrayList();
+
+input.add(new Relation(“animal”, “mammal”));
+input.add(new Relation(“animal”, “bird”));
+input.add(new Relation(“lifeform”, “animal”));
+input.add(new Relation(“cat”, “lion”));
+input.add(new Relation(“mammal”, “cat”));
+input.add(new Relation(“animal”, “fish”));
+
+TreePrinter.printTree(input);
+
+Expected output:
+line 1: lifeform
+line 2: animal
+line 3: mammal
+line 4: cat
+line 5: lion
+line 6: bird
+line 7: fish
+
+
+Expected output:
+
+lifeform
+  animal
+    mammal
+      cat
+        lion
+    bird
+    fish
+
+Website: https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;					
+public class Program
+{    
+	public class TreePrinter{
+        /*
+        Dictionary<string, IList<string>> key: parent, value: list of children
+        HashSet<string> head store starting head
+        for each head in heads 
+        do a DFS
+        print
+        */
+		public void PrintTree(IList<Relation> rs){
+            Dictionary<string, IList<string>> d = new Dictionary<string, IList<string>>();
+            HashSet<string> children = new HashSet<string>();
+            foreach(Relation r in rs)
+            {
+                children.Add(r.child);
+                if(!d.ContainsKey(r.parent))d.Add(r.parent, new List<string>());
+                d[r.parent].Add(r.child);
+            }
+            string head = "";
+            foreach(string parent in d.Keys)
+                if(!children.Contains(parent))
+                {
+                    head = parent;
+                    break;
+                }
+            Helper(d, head, 0);
+        }
+        public void Helper(Dictionary<string, IList<string>> d, string head, int depth)
+        {
+            for(int i = 0; i<depth;i++)Console.Write("  ");
+            Console.WriteLine(head);
+            if(!d.ContainsKey(head))return;
+            foreach(string child in d[head])Helper(d, child, depth + 1);
+        }
+	}
+    public class Relation{
+        public string parent;
+        public string child;
+        public Relation(string parent, string child){
+            this.parent = parent;
+            this.child = child;
+        }
+    }
+	
+	public static void Main()
+	{
+        TreePrinter tp = new TreePrinter();
+        IList<Relation> input = new List<Relation>();
+        input.Add(new Relation("animal", "mammal"));
+        input.Add(new Relation("animal", "bird"));
+        input.Add(new Relation("lifeform", "animal"));
+        input.Add(new Relation("cat", "lion"));
+        input.Add(new Relation("mammal", "cat"));
+        input.Add(new Relation("animal", "fish"));       
+        tp.PrintTree(input);
+	}
+}
