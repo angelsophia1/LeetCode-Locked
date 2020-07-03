@@ -60,7 +60,7 @@ public class Program
         do a DFS
         print
         */
-		public void PrintTree(IList<Relation> rs){
+	public void PrintTree(IList<Relation> rs){
             Dictionary<string, IList<string>> d = new Dictionary<string, IList<string>>();
             HashSet<string> children = new HashSet<string>();
             foreach(Relation r in rs)
