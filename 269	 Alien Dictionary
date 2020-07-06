@@ -1,0 +1,104 @@
+Question:
+There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.
+
+Example 1:
+
+Input:
+[
+  "wrt",
+  "wrf",
+  "er",
+  "ett",
+  "rftt"
+]
+
+Output: "wertf"
+Example 2:
+
+Input:
+[
+  "z",
+  "x"
+]
+
+Output: "zx"
+Example 3:
+
+Input:
+[
+  "z",
+  "x",
+  "z"
+] 
+
+Output: "" 
+
+Explanation: The order is invalid, so return "".
+Note:
+
+1.You may assume all letters are in lowercase.
+2.You may assume that if a is a prefix of b, then a must appear before b in the given dictionary.
+3.If the order is invalid, return an empty string.
+4.There may be multiple valid order of letters, return any one of them is fine.
+
+website: https://dotnetfiddle.net/
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+public class Program
+{
+	public static string AlienOrder(string[] words){
+		Dictionary<char, HashSet<char>> d = new Dictionary<char, HashSet<char>>();
+		int[] inDegrees = new int[26];
+		BuildGraph(words, d, inDegrees);
+		string res = TopologicalSort(d, inDegrees);
+		return res.Length == d.Count ? res : "";
+	}
+	public static void BuildGraph(string[] words, Dictionary<char, HashSet<char>> d, int[] inDegrees){
+		foreach(string word in words) {
+			foreach(char c in word) {
+				if(!d.ContainsKey(c)){
+					d.Add(c, new HashSet<char>());
+				}
+			}
+		}
+		for(int j = 1; j<words.Length;j++) {
+			string prev = words[j - 1];
+			string curr = words[j];
+			int length = Math.Min(prev.Length, curr.Length);
+			for(int i = 0; i< length;i++) {
+				if(prev[i] != curr[i]) {
+					d[prev[i]].Add(curr[i]);
+					inDegrees[curr[i] - 'a']++;
+					break;
+				}
+			}
+		}
+	}
+	public static string TopologicalSort(Dictionary<char, HashSet<char>> d, int[] inDegrees){
+		Queue<char> q = new Queue<char>();
+		StringBuilder sb = new StringBuilder();
+		foreach(char par in d.Keys){
+			if(inDegrees[par - 'a'] == 0) {
+				q.Enqueue(par);
+			}
+		}
+		while(q.Count > 0) {
+			char curr = q.Dequeue();
+			sb.Append(curr);
+			foreach(char c in d[curr]) {
+				if(--inDegrees[c - 'a'] == 0) {
+					q.Enqueue(c);
+				}
+			}
+		}
+		return sb.ToString();
+	}
+	public static void Main()
+	{
+		Console.WriteLine(AlienOrder(new string[5]{"wrt","wrf","er","ett","rftt"}));
+		Console.WriteLine(AlienOrder(new string[]{"z","x"}));
+		Console.WriteLine(AlienOrder(new string[]{"z","x","z"}));
+	}
+}
