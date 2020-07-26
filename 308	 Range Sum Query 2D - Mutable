@@ -1,3 +1,4 @@
+
 Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
 
 [Picture:https://www.cnblogs.com/yrbbest/p/5058571.html]
@@ -25,26 +26,107 @@ The matrix is only modifiable by the update function.
 You may assume the number of calls to update and sumRegion function is distributed evenly.
 You may assume that row1 ≤ row2 and col1 ≤ col2.
 
-public class NumMatrix {
-    private int[,] array;
-    private int rows,columns;
-    public NumMatrix(int[][] matrix) {
-        if(matrix.Length<1||matrix[0].Length<1)return;
-        rows = matrix.Length;
-        columns = matrix[0].Length;
-        array = new int[rows,columns];
-        for(int i = 0;i<rows;i++)
-            for(int j = 0;j<columns;j++)
-                array[i,j] = matrix[i][j];
-    }
-    public void Update(int i,int j,int val){
-      array[i,j] = val;
-    }
-    public int SumRegion(int row1, int col1, int row2, int col2) {
-        int sum = 0;
-        for(int i = row1;i<=row2;i++)
-            for(int j = col1;j<=col2;j++)
-                sum += array[i,j];
-        return sum;
-    }
+Website: https://dotnetfiddle.net/
+/*
+Brute Force: TLE
+*/
+using System;
+public class Program
+{
+	public class NumMatrix {
+		private int[,] array;
+		private int rows,columns;
+		public NumMatrix(int[][] matrix) {
+			if(matrix.Length<1||matrix[0].Length<1)return;
+			rows = matrix.Length;
+			columns = matrix[0].Length;
+			array = new int[rows,columns];
+			for(int i = 0;i<rows;i++)
+				for(int j = 0;j<columns;j++)
+					array[i,j] = matrix[i][j];
+		}
+		public void Update(int i,int j,int val){
+		  array[i,j] = val;
+		}
+		public int SumRegion(int row1, int col1, int row2, int col2) {
+			int sum = 0;
+			for(int i = row1;i<=row2;i++)
+				for(int j = col1;j<=col2;j++)
+					sum += array[i,j];
+			return sum;
+		}
+	}
+	public static void Main()
+	{
+		NumMatrix test = new NumMatrix(new int[2][]{new int[2]{1,2},new int[2]{1,2}});
+		Console.WriteLine(test.SumRegion(0,0,1,1));
+	}
 }
+
+/*
+Binary Indexed Tree (BIT) or Fenwick Tree
+*/
+using System;
+using System.Collections.Generic;					
+public class Program
+{
+	public class BIT {
+		private int[][] bits;
+		public BIT(int[][] matrix) {
+			bits = new int[matrix.Length + 1][];
+			for(int i = 0;i<matrix.Length + 1;i++) bits[i] = new int[matrix[0].Length + 1];
+			for(int i = 0; i<matrix.Length;i++) {
+				for(int j = 0; j<matrix[0].Length;j++) {
+					Update(i + 1, j + 1, matrix[i][j]);	
+				}
+			}
+		}
+		public void Update(int i, int j, int val) {
+			for(int row = i; row<bits.Length;row+= (row & -row)) {
+				for(int col = j; col<bits[0].Length;col += (col & -col)) {
+					bits[row][col] += val;
+				}
+			}
+		}
+		public int Query(int i, int j) {
+			int sum = 0;
+			for(int row = i; row>0;row -= (row & -row)) {
+				for(int col = j; col>0;col -= (col & -col)) {
+					sum += bits[row][col];
+				}
+			} 
+			return sum;
+		} 
+	}
+	public class NumMatrix{
+		private BIT bit;
+		private int[][] matrix;
+		public NumMatrix(int[][] matrix) {
+			this.bit = new BIT(matrix);
+			this.matrix = matrix;
+		}
+		public void Update(int i, int j, int val) {
+			int dif = - matrix[i][j] + val;
+			matrix[i][j] = val;
+			i++;
+			j++;
+			bit.Update(i, j, dif);
+		}
+		public int SumRegion(int row1, int col1, int row2, int col2) {
+			row2++;
+			col2++;
+			return bit.Query(row2, col2) + bit.Query(row1,col1) - bit.Query(row1,col2) - bit.Query(row2, col1);
+		}
+	}
+	public static void Main()
+	{
+		NumMatrix test = new NumMatrix(new int[5][]{new int[5]{3, 0, 1, 4, 2},new int[5]{5, 6, 3, 2, 1},new int[5]{1, 2, 0, 1, 5},new int[5]{4, 1, 0, 1, 7},new int[5]{1, 0, 3, 0, 5}});
+		Console.WriteLine(test.SumRegion(2,1,4,3));
+		test.Update(3,2,2);
+		Console.WriteLine(test.SumRegion(2,1,4,3));											
+	}
+}
+
+/*
+Segment Tree 
+*/
